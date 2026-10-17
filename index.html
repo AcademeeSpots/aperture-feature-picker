@@ -305,6 +305,21 @@ textarea{width:100%;min-height:110px;font:inherit;font-size:.95rem;padding:10px 
       <h3><label for="notes">Your notes (optional, included in exports)</label></h3>
       <textarea id="notes" placeholder="e.g. Questions for the team, constraints, people to involve, what “done” looks like for you…"></textarea>
     </div>
+    <div class="rv-group" id="submitBox">
+      <h3>Send your picks to Aperture</h3>
+      <p style="margin:0 0 10px;color:var(--muted);font-size:.92rem">Tell us who you are and press Submit. We receive your choices, stars and notes right away.</p>
+      <div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+        <label style="font-size:.85rem">Your name *<input type="text" id="fName" autocomplete="name" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px"></label>
+        <label style="font-size:.85rem">Email *<input type="email" id="fEmail" autocomplete="email" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px"></label>
+        <label style="font-size:.85rem">Company<input type="text" id="fCompany" autocomplete="organization" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px"></label>
+      </div>
+      <div style="margin-top:12px"><button type="button" class="btn primary" id="submitBtn">Submit my picks</button></div>
+      <div class="status" id="submitStatus" role="status" aria-live="polite"></div>
+    </div>
+    <div class="rv-group" id="thanks" hidden tabindex="-1">
+      <h3>✓ Thank you, your picks have been sent</h3>
+      <p style="margin:0">We've received your roadmap choices and will follow up by email. You can still change them and submit again, or keep a copy below.</p>
+    </div>
     <div class="modal-actions">
       <button type="button" class="btn ghost" id="copyBtn">Copy summary</button>
       <button type="button" class="btn ghost" id="dlBtn">Download summary (.txt)</button>
@@ -672,9 +687,10 @@ var CORE = ["GOV-01","GOV-02","GOV-03","GOV-04","UW-01","UW-08","FIN-06","FPM-02
 var BUCKETS = [{k:"now",t:"Now"},{k:"next",t:"Next"},{k:"later",t:"Later"}];
 var EFFORT = {S:"Small",M:"Medium",L:"Large"};
 var KEY = "aperture-feature-picker-v1";
+var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwJPlptcvwgcjCaKyw6Cc1gi3fqeDNl1GDpdt7E1clGAMgNQ8V0Fxu6ET373KSUn9ec/exec"; /* Apps Script /exec URL */
 var byId = {}; FEATURES.forEach(function(f){byId[f.id]=f;});
 
-var state = {picks:{},stars:{},notes:"",view:"outcome",filter:"all"};
+var state = {picks:{},stars:{},notes:"",name:"",email:"",company:"",submitted:false,view:"outcome",filter:"all"};
 var expanded = {};
 var storageOK = true;
 function load(){
@@ -685,6 +701,7 @@ function load(){
         state.picks = (s.picks && typeof s.picks==="object")? s.picks:{};
         state.stars = (s.stars && typeof s.stars==="object")? s.stars:{};
         state.notes = typeof s.notes==="string"? s.notes:"";
+        ["name","email","company"].forEach(function(k){state[k]=typeof s[k]==="string"? s[k]:"";});
         state.view = GROUPS[s.view]? s.view:"outcome";
         state.filter = ["all","undecided","picked","starred"].indexOf(s.filter)>=0? s.filter:"all";
       }}
@@ -924,7 +941,7 @@ var overlay = document.getElementById("overlay"), lastFocus=null;
 var notes = document.getElementById("notes");
 function openReview(){
   lastFocus = document.activeElement;
-  renderReview(); notes.value = state.notes; setStatus("");
+  renderReview(); notes.value = state.notes; setStatus(""); syncForm();
   overlay.hidden = false; document.body.style.overflow="hidden";
   document.getElementById("closeReview").focus();
 }
@@ -975,8 +992,46 @@ document.getElementById("dlBtn").addEventListener("click",function(){
 document.getElementById("printBtn").addEventListener("click",function(){ save(); buildPrint(); window.print(); });
 document.getElementById("resetBtn").addEventListener("click",function(){
   if(window.confirm("Reset all choices? This clears every Now / Next / Later pick, all stars and your notes. This can't be undone.")){
-    state.picks={}; state.stars={}; state.notes=""; notes.value=""; save(); renderReview(); updateCounts(); setStatus("All choices have been reset.");
+    state.picks={}; state.stars={}; state.notes=""; notes.value=""; thanks.hidden=true; document.getElementById("submitBox").hidden=false; save(); renderReview(); updateCounts(); setStatus("All choices have been reset.");
   }
+});
+
+
+/* ---------- Submit to Google Sheet + email (via Apps Script) ---------- */
+var fName=document.getElementById("fName"), fEmail=document.getElementById("fEmail"), fCompany=document.getElementById("fCompany");
+var submitBtn=document.getElementById("submitBtn"), submitStatus=document.getElementById("submitStatus"), thanks=document.getElementById("thanks");
+function setSubmitStatus(m,bad){submitStatus.textContent=m; submitStatus.style.color=bad?"#9b1c1c":"";}
+function syncForm(){ fName.value=state.name; fEmail.value=state.email; fCompany.value=state.company; thanks.hidden=true; document.getElementById("submitBox").hidden=false; setSubmitStatus(""); }
+[["name",fName],["email",fEmail],["company",fCompany]].forEach(function(p){ p[1].addEventListener("input",function(){state[p[0]]=p[1].value; save();}); });
+function names(list){return list.map(function(f){return (state.stars[f.id]?"★ ":"")+f.title;});}
+function buildPayload(){
+  var c=counts(), t=tally();
+  return {
+    timestamp:new Date().toISOString(),
+    name:state.name.trim(), email:state.email.trim(), company:state.company.trim(),
+    notes:state.notes.trim(),
+    picks:FEATURES.map(function(f){return {id:f.id,title:f.title,bucket:state.picks[f.id]||"none",starred:!!state.stars[f.id],effort:f.effort};}),
+    now:names(ordered("now")), next:names(ordered("next")), later:names(ordered("later")),
+    starredFeatures:FEATURES.filter(function(f){return state.stars[f.id];}).map(function(f){return f.title;}),
+    counts:{now:c.now,next:c.next,later:c.later,starred:c.star},
+    effort:t, summary:buildText(), source:location.href
+  };
+}
+submitBtn.addEventListener("click",function(){
+  var em=state.email.trim();
+  if(!state.name.trim()){setSubmitStatus("Please enter your name.",true); fName.focus(); return;}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){setSubmitStatus("Please enter a valid email address.",true); fEmail.focus(); return;}
+  var c=counts();
+  if(!c.now && !c.next && !c.later && !c.star){setSubmitStatus("Pick at least one feature before submitting.",true); return;}
+  if(!WEB_APP_URL || WEB_APP_URL.indexOf("PASTE_")===0){setSubmitStatus("Submitting isn't set up yet. Please use Copy or Download below and send it to us.",true); return;}
+  save(); submitBtn.disabled=true; setSubmitStatus("Sending…");
+  fetch(WEB_APP_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(buildPayload())})
+  .then(function(){
+    state.submitted=true; submitBtn.disabled=false; setSubmitStatus("");
+    document.getElementById("submitBox").hidden=true; thanks.hidden=false; thanks.focus();
+  },function(){
+    submitBtn.disabled=false; setSubmitStatus("We couldn't send that (check your connection). Your picks are saved here. Try again, or use Copy / Download below.",true);
+  });
 });
 
 /* expose for testing */
