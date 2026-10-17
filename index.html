@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Fund Operations Roadmap — Choose What We Build First</title>
+<style>
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --ink:#1c2533; --muted:#4f5b6b; --line:#dde2e8;
+  --navy:#1f3a5f; --teal:#1f6f74; --teal-soft:#e4f1f1;
+  --now:#1f6f4a; --now-soft:#e3f2ea; --next:#22558f; --next-soft:#e5eef8; --later:#5b5675; --later-soft:#eeedf4;
+  --star:#9a6210; --star-soft:#fbf1df; --focus:#f2a900; --radius:12px;
+  --shadow:0 1px 2px rgba(20,30,50,.06),0 2px 8px rgba(20,30,50,.05);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;font-size:16px;padding-bottom:96px}
+a{color:var(--teal)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.skip{position:absolute;left:-9999px;top:0;background:#fff;padding:8px 12px;z-index:100}
+.skip:focus{left:12px;top:12px}
+header.hero{background:linear-gradient(135deg,#1f3a5f 0%,#24546a 100%);color:#fff;padding:44px 0 36px}
+.hero .prep{font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;opacity:.85;margin:0 0 10px}
+.hero h1{font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.2;margin:0 0 12px;font-weight:650}
+.hero p.lead{max-width:760px;margin:0;font-size:1.07rem;color:#e6edf3}
+.hero .how{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:6px 12px;border-radius:999px;font-size:.88rem}
+section.intro{padding:32px 0 8px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+.panel h2{margin:0 0 6px;font-size:1.25rem;color:var(--navy)}
+.panel p{margin:.4rem 0;color:var(--muted)}
+.flow{list-style:none;padding:0;margin:18px 0 6px;display:flex;flex-wrap:wrap;gap:8px 4px;align-items:stretch}
+.flow li{display:flex;align-items:center;gap:4px}
+.flow .step{background:var(--teal-soft);color:#14484c;border:1px solid #c5e0e1;border-radius:10px;padding:8px 12px;font-size:.92rem;font-weight:600;text-align:center;min-width:92px}
+.flow .step small{display:block;font-weight:400;color:#3c5c5f;font-size:.76rem}
+.flow .arrow{color:#7a8a99;font-size:1.1rem;padding:0 2px}
+.flow li.loop .step{background:#fff;border-style:dashed}
+.engines{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}
+.engine{border:1px solid var(--line);border-radius:10px;padding:14px;background:#fbfcfd}
+.engine b{display:block;color:var(--navy);margin-bottom:4px}
+.engine .num{display:inline-block;width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;text-align:center;font-size:.8rem;line-height:24px;margin-right:6px}
+.engine p{font-size:.92rem;margin:0}
+.howto{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:12px}
+.howto div{background:#fbfcfd;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.93rem;color:var(--muted)}
+.howto b{color:var(--ink)}
+details.gloss{margin-top:12px}
+details.gloss summary{cursor:pointer;color:var(--teal);font-weight:600}
+details.gloss dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;font-size:.92rem;margin:12px 0 0}
+details.gloss dt{font-weight:600}
+details.gloss dd{margin:0;color:var(--muted)}
+.toolbar{position:sticky;top:0;z-index:20;background:rgba(245,246,248,.96);backdrop-filter:saturate(1.2) blur(4px);border-bottom:1px solid var(--line);padding:10px 0}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 14px;border-radius:999px;font-size:.95rem;font-weight:600;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tab:hover{border-color:#9fb0c2}
+.subtools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:8px;font-size:.9rem;color:var(--muted)}
+.subtools label{display:inline-flex;gap:6px;align-items:center}
+select,.btn-sm{font:inherit;font-size:.88rem;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);cursor:pointer}
+.view-note{padding:18px 0 0;color:var(--muted);font-size:.95rem}
+.group{margin:26px 0 8px}
+.group-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.group-head h2{margin:0;font-size:1.2rem;color:var(--navy)}
+.group-head .count{font-size:.85rem;color:var(--muted)}
+.group > p.desc{margin:0 0 12px;color:var(--muted);font-size:.95rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;align-items:start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;border-left:5px solid var(--line)}
+.card.p-now{border-left-color:var(--now)} .card.p-next{border-left-color:var(--next)} .card.p-later{border-left-color:var(--later)}
+.card-top{display:flex;gap:10px;align-items:flex-start}
+.card h3{margin:0;font-size:1.04rem;line-height:1.35;flex:1}
+.star{appearance:none;border:1px solid var(--line);background:#fff;border-radius:50%;width:38px;height:38px;flex:none;cursor:pointer;font-size:1.15rem;color:#8894a3;line-height:1}
+.star[aria-pressed="true"]{background:var(--star-soft);border-color:#e3c48e;color:var(--star)}
+.card .sum{margin:0;color:#2f3a49;font-size:.95rem}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:.76rem;padding:3px 9px;border-radius:999px;background:#eef1f5;color:#3b4757;border:1px solid #e1e6ec}
+.chip.eff{background:#fff;border-color:#c9d2dc;font-weight:600}
+.chip.core{background:var(--teal-soft);color:#14484c;border-color:#c5e0e1}
+.actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:auto}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{appearance:none;border:0;border-right:1px solid var(--line);background:#fff;padding:8px 14px;font:inherit;font-size:.9rem;font-weight:600;color:var(--muted);cursor:pointer;min-width:62px}
+.seg button:last-child{border-right:0}
+.seg button:hover{background:#f4f6f9}
+.seg button[data-b="now"][aria-pressed="true"]{background:var(--now);color:#fff}
+.seg button[data-b="next"][aria-pressed="true"]{background:var(--next);color:#fff}
+.seg button[data-b="later"][aria-pressed="true"]{background:var(--later);color:#fff}
+.more{appearance:none;border:0;background:none;color:var(--teal);font:inherit;font-size:.9rem;font-weight:600;cursor:pointer;padding:8px 4px;margin-left:auto}
+.details{border-top:1px solid var(--line);padding-top:12px;font-size:.93rem;display:grid;gap:12px}
+.details[hidden]{display:none}
+.details h4{margin:0 0 3px;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.details p{margin:0}
+.ba{display:grid;grid-template-columns:1fr;gap:8px}
+.ba > div{border-radius:10px;padding:10px 12px;font-size:.9rem}
+.ba .b{background:#f6f1f1;border:1px solid #ecdcdc}
+.ba .a{background:var(--now-soft);border:1px solid #cfe6d9}
+.est{background:#fbf7ec;border:1px solid #efe1bd;border-radius:10px;padding:10px 12px;font-size:.9rem}
+.est b{color:#5a4310}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:4px 12px;font-size:.9rem}
+.kv dt{font-weight:600;color:#3b4757}
+.kv dd{margin:0}
+.note{font-size:.86rem;color:#5a4a1e;background:#fffaf0;border-left:3px solid #e0b860;padding:6px 10px;border-radius:4px}
+.based{font-size:.8rem;color:var(--muted)}
+.based code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.78rem;background:#eef1f5;padding:1px 5px;border-radius:4px}
+.empty{color:var(--muted);font-style:italic;padding:8px 0}
+footer.foot{margin:40px 0 0;padding:24px 0;border-top:1px solid var(--line);font-size:.86rem;color:var(--muted)}
+footer.foot p{margin:.3rem 0}
+/* sticky summary bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#16263d;color:#fff;box-shadow:0 -4px 16px rgba(0,0,0,.15)}
+.bar .wrap{display:flex;align-items:center;gap:14px;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+.counts{display:flex;gap:8px;flex-wrap:wrap;flex:1}
+.cnt{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;font-size:.88rem;background:rgba(255,255,255,.1)}
+.cnt b{font-size:1rem}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.btn{appearance:none;border:1px solid transparent;border-radius:10px;padding:10px 16px;font:inherit;font-weight:650;cursor:pointer;font-size:.95rem}
+.btn.primary{background:#f2c14e;color:#1b2433}
+.btn.primary:hover{background:#f5cd6a}
+.btn.ghost{background:#fff;border-color:var(--line);color:var(--ink)}
+.btn.ghost:hover{background:#f4f6f9}
+.btn.danger{background:#fff;border-color:#e3b4b4;color:#9b1c1c}
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(15,23,36,.55);z-index:50;display:flex;align-items:flex-start;justify-content:center;padding:28px 14px;overflow:auto}
+.overlay[hidden]{display:none}
+.modal{background:#fff;border-radius:16px;max-width:820px;width:100%;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.modal h2{margin:0;color:var(--navy);font-size:1.35rem}
+.x{appearance:none;border:1px solid var(--line);background:#fff;border-radius:8px;width:38px;height:38px;font-size:1.3rem;cursor:pointer;color:var(--muted)}
+.rv-group{margin-top:18px}
+.rv-group h3{margin:0 0 8px;font-size:1.02rem;display:flex;align-items:center;gap:8px}
+.rv-group ol{margin:0;padding-left:22px}
+.rv-group li{margin:4px 0}
+.rv-group li .meta{color:var(--muted);font-size:.86rem}
+.tally{width:100%;border-collapse:collapse;margin-top:8px;font-size:.92rem}
+.tally th,.tally td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+.tally th:first-child,.tally td:first-child{text-align:left}
+.tally thead th{background:#f4f6f9}
+.caveat{font-size:.86rem;color:#5a4a1e;background:#fffaf0;border:1px solid #efe1bd;border-radius:10px;padding:10px 12px;margin-top:12px}
+textarea{width:100%;min-height:110px;font:inherit;font-size:.95rem;padding:10px 12px;border:1px solid #b9c3cf;border-radius:10px;resize:vertical;color:var(--ink)}
+.modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.status{min-height:1.4em;font-size:.9rem;color:var(--now);margin-top:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#printArea{display:none}
+@media (max-width:640px){
+  .wrap{padding:0 14px}
+  .cards{grid-template-columns:1fr}
+  .ba{grid-template-columns:1fr}
+  .flow .arrow{display:none}
+  .flow li{flex:1 1 30%}
+  .flow .step{width:100%;min-width:0}
+  .bar .wrap{gap:8px;padding-top:8px;padding-bottom:8px}
+  .counts{gap:4px}
+  .cnt{padding:4px 8px;font-size:.8rem}
+  .cnt.total{display:none}
+  .bar .btn.primary{padding:9px 12px;font-size:.9rem}
+  .tab{padding:8px 11px;font-size:.88rem}
+  body{padding-bottom:120px}
+}
+@media print{
+  @page{margin:14mm}
+  body{background:#fff;padding:0;font-size:10.5pt;color:#000}
+  body > *:not(#printArea){display:none !important}
+  #printArea{display:block !important}
+  #printArea h1{font-size:15pt;margin:0 0 2pt}
+  #printArea .sub{font-size:9pt;color:#444;margin:0 0 10pt}
+  #printArea h2{font-size:11.5pt;margin:10pt 0 3pt;border-bottom:1px solid #999;padding-bottom:2pt}
+  #printArea ol{margin:0;padding-left:18pt}
+  #printArea li{margin:1.5pt 0;page-break-inside:avoid}
+  #printArea .m{color:#444;font-size:9pt}
+  #printArea table{border-collapse:collapse;font-size:9.5pt;margin-top:4pt}
+  #printArea th,#printArea td{border:1px solid #999;padding:2pt 8pt;text-align:center}
+  #printArea th:first-child,#printArea td:first-child{text-align:left}
+  #printArea .notes{white-space:pre-wrap;border:1px solid #bbb;padding:5pt 7pt;font-size:9.5pt}
+  #printArea .fine{font-size:8pt;color:#444;margin-top:10pt}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#features">Skip to the features</a>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="prep">Prepared by Aperture · Draft for discussion</p>
+    <h1>Your Fund Operations Roadmap — Choose What We Build First</h1>
+    <p class="lead">Below are 30 candidate capabilities we could build, each drawn from your investment-controls manual. Read through, mark each one <b>Now</b>, <b>Next</b> or <b>Later</b>, star your top priorities, then review and share your picks. Nothing here is built yet. This is a menu, not a status report.</p>
+    <div class="how">
+      <span class="pill">⏱ About 10–15 minutes</span>
+      <span class="pill">💾 Your choices save automatically in this browser</span>
+      <span class="pill">📄 Export to text or PDF when done</span>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<section class="intro wrap" aria-labelledby="how-h">
+  <div class="panel">
+    <h2 id="how-h">How the whole system works</h2>
+    <p>Your manual follows each investment from start to finish. Investor money comes in, the team finds and tests deals, closes them, runs the properties, manages and replaces the debt, reports to investors, eventually sells or exits, and the monitoring step feeds lessons back into every stage.</p>
+    <ol class="flow" aria-label="Investment lifecycle, in order">
+      <li><span class="step">Capital in<small>investors &amp; funds</small></span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="step">Find deals<small>source &amp; screen</small></span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="step">Underwrite<small>test &amp; approve</small></span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="step">Close<small>buy the property</small></span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="step">Run the asset<small>operate &amp; improve</small></span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="step">Refinance<small>manage &amp; replace debt</small></span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="step">Report<small>investors &amp; regulators</small></span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="step">Exit<small>sell, 1031 or 721</small></span><span class="arrow" aria-hidden="true">→</span></li>
+      <li class="loop"><span class="step">Monitor<small>test &amp; feed back ↺</small></span></li>
+    </ol>
+    <p>Governance rules (who approves what, conflicts, record-keeping) sit over every stage.</p>
+
+    <h2 style="margin-top:22px">The four economic engines</h2>
+    <p>The manual keeps four sources of value separate, so one is never passed off as another (for example, refinance cash presented as operating success).</p>
+    <div class="engines">
+      <div class="engine"><b><span class="num">1</span>Property operations</b><p>Real income gains from rent, occupancy, expenses and light improvements.</p></div>
+      <div class="engine"><b><span class="num">2</span>Financing &amp; refinancing</b><p>What debt adds or costs: bridge loans, long-term loans, rate caps, cash-outs.</p></div>
+      <div class="engine"><b><span class="num">3</span>Tax-structured &amp; capital formation</b><p>How investor money arrives and leaves: 1031/DST, 721/REIT, subscriptions and redemptions.</p></div>
+      <div class="engine"><b><span class="num">4</span>Sponsor economics</b><p>Fees, promote, related-party services and conflicts of interest.</p></div>
+    </div>
+
+    <h2 style="margin-top:22px">How to use this page</h2>
+    <div class="howto">
+      <div><b>1. Pick a view.</b> The same 30 features, sorted four ways: by business outcome, lifecycle stage, who uses it, or risk removed.</div>
+      <div><b>2. Decide.</b> Press <b>Now</b>, <b>Next</b> or <b>Later</b> on each card (press again to clear). Use <b>☆</b> to star your top priorities.</div>
+      <div><b>3. Review &amp; share.</b> Use <b>Review my picks</b> in the bar at the bottom to see your roadmap, add notes, and copy, download or print it.</div>
+    </div>
+    <details class="gloss">
+      <summary>Plain-English glossary of terms used below</summary>
+      <dl>
+        <dt>SOP</dt><dd>Standard Operating Procedure: a written “how we do this” rulebook for one process. Each card lists the SOP IDs it draws on.</dd>
+        <dt>IC</dt><dd>Investment Committee: the group that approves major decisions.</dd>
+        <dt>LOI</dt><dd>Letter of intent: the first written offer to buy a property.</dd>
+        <dt>Bridge loan / takeout</dt><dd>A short-term loan used to buy and improve a property, and the long-term loan that later replaces it.</dd>
+        <dt>Rate cap</dt><dd>A contract that limits how high a floating interest rate can go.</dd>
+        <dt>Covenant</dt><dd>A promise in a loan agreement, such as keeping income above a set multiple of loan payments.</dd>
+        <dt>NOI</dt><dd>Net operating income: rent and other income minus operating costs.</dd>
+        <dt>NAV</dt><dd>Net asset value: what the fund's holdings are worth, in total or per share.</dd>
+        <dt>Sources &amp; uses</dt><dd>Where the money for a deal comes from and where it goes at closing.</dd>
+        <dt>1031 / DST</dt><dd>A tax-deferred property exchange, and a Delaware Statutory Trust, one way investors hold property interests.</dd>
+        <dt>721 / UPREIT</dt><dd>Contributing property interests into a REIT's operating partnership in exchange for units.</dd>
+        <dt>Related party</dt><dd>A person or company connected to the sponsor, such as an affiliated property manager.</dd>
+        <dt>Evidence label</dt><dd>A tag on each claim: Confirmed, Partially Supported, Management / Sponsor Claim, Industry Practice, Analytical Inference, or Unverified.</dd>
+        <dt>Effort S / M / L</dt><dd>Our rough sense of build size: Small, Medium or Large. These are estimates, not quotes.</dd>
+      </dl>
+    </details>
+  </div>
+</section>
+
+<div class="toolbar" id="features">
+  <div class="wrap">
+    <div class="tabs" role="tablist" aria-label="Choose how to group the features">
+      <button class="tab" role="tab" id="tab-outcome" data-view="outcome" aria-controls="viewPanel">By Business Outcome</button>
+      <button class="tab" role="tab" id="tab-stage" data-view="stage" aria-controls="viewPanel">By Lifecycle Stage</button>
+      <button class="tab" role="tab" id="tab-role" data-view="role" aria-controls="viewPanel">By Who Uses It</button>
+      <button class="tab" role="tab" id="tab-risk" data-view="risk" aria-controls="viewPanel">By Risk Removed</button>
+    </div>
+    <div class="subtools">
+      <label for="filter">Show
+        <select id="filter">
+          <option value="all">All features</option>
+          <option value="undecided">Not yet decided</option>
+          <option value="picked">Only my picks</option>
+          <option value="starred">Only starred</option>
+        </select>
+      </label>
+      <span>
+        <button type="button" class="btn-sm" id="expandAll">Expand all</button>
+        <button type="button" class="btn-sm" id="collapseAll">Collapse all</button>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="viewPanel" role="tabpanel" tabindex="-1"></div>
+
+<footer class="foot wrap">
+  <p><b>Important notes.</b> Effort sizes and timelines are rough estimates for planning only. They are not quotes or commitments, and they would be firmed up after a short discovery phase and depend on data access and decision turnaround.</p>
+  <p>The underlying control documents are internal control templates. Neither they nor this page are legal, tax, securities, accounting or investment advice. Matters flagged for professional review still need qualified counsel and advisors.</p>
+  <p>Dollar and percentage thresholds in the underlying SOPs (for example approval limits) are still placeholders, to be set by your accountable executives. Nothing on this page states facts about any fund's performance or claims that any feature already exists.</p>
+  <p>Prepared by Aperture.</p>
+</footer>
+</main>
+
+<div class="bar" role="region" aria-label="Your picks summary">
+  <div class="wrap">
+    <div class="counts" aria-live="polite">
+      <span class="cnt"><span class="dot" style="background:#5fc98f"></span>Now <b id="cNow">0</b></span>
+      <span class="cnt"><span class="dot" style="background:#7fb0ea"></span>Next <b id="cNext">0</b></span>
+      <span class="cnt"><span class="dot" style="background:#b9b3d6"></span>Later <b id="cLater">0</b></span>
+      <span class="cnt"><span aria-hidden="true" style="color:#f2c14e">★</span>Starred <b id="cStar">0</b></span>
+      <span class="cnt total" style="background:transparent;opacity:.8">of <b id="cTotal">30</b> features</span>
+    </div>
+    <button type="button" class="btn primary" id="openReview">Review my picks</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="rvTitle" id="modal">
+    <div class="modal-head">
+      <div>
+        <h2 id="rvTitle">Your roadmap picks</h2>
+        <p style="margin:4px 0 0;color:var(--muted);font-size:.92rem">Starred items are listed first in each group.</p>
+      </div>
+      <button type="button" class="x" id="closeReview" aria-label="Close review">×</button>
+    </div>
+    <div id="rvBody"></div>
+    <div class="rv-group">
+      <h3><label for="notes">Your notes (optional, included in exports)</label></h3>
+      <textarea id="notes" placeholder="e.g. Questions for the team, constraints, people to involve, what “done” looks like for you…"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn ghost" id="copyBtn">Copy summary</button>
+      <button type="button" class="btn ghost" id="dlBtn">Download summary (.txt)</button>
+      <button type="button" class="btn ghost" id="printBtn">Print / Save as PDF</button>
+      <button type="button" class="btn danger" id="resetBtn" style="margin-left:auto">Reset all choices</button>
+    </div>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+  </div>
+</div>
+
+<div id="printArea" aria-hidden="true"></div>
+<script>
+const FEATURES = [
+{id:"net-proceeds",title:"Refinance Net-Proceeds Check Before Any Payout",
+summary:"Before any refinance money is paid to investors or used for new deals, the system builds the Net Proceeds Certificate and holds the payout until it is signed off.",
+why:"A new loan can look like a windfall, but after paying off the old loan, closing costs, escrows (money the lender holds back) and reserves, the cash actually left can be much smaller. The control manual's rule is “net before gross”: nothing is called “equity returned” until it has been netted on a certificate.",
+before:"A lender term sheet shows a large new loan. Someone's spreadsheet subtracts the payoff, but closing costs and lender reserves are added up by hand, and a distribution memo starts circulating on an early number.",
+after:"One screen shows gross loan → every deduction → true net cash, with base, moderate and severe cases. The payout stays locked until the CFO attests and the authorized approver signs.",
+effort:"M",weeks:"4–7 weeks",stage:"refinance",outcome:"cash",risk:"cash",primary:"cfo",
+riskText:"Paying out, reinvesting or advertising refinance cash that isn't really there after all payoffs and costs.",
+roles:["CFO","Head of Capital Markets / Debt","Fund Controller / Fund Ops","Investment Committee"],engines:[2],
+based:["FIN-06","FPM-04","DISP-06","Refinance net-proceeds certificate (template)"]},
+
+{id:"liquidity",title:"Investor Liquidity & Redemption Dashboard",
+summary:"One live view of available cash against upcoming investor redemption requests and other obligations, over 30-, 90-, 180- and 365-day windows.",
+why:"Investors in a private REIT (a non-traded real estate fund) can ask for their money back. If requests build up faster than cash, the fund may have to limit (“gate”) or share out (“prorate”) withdrawals, which hurts trust. Seeing pressure months ahead turns a scramble into a plan.",
+before:"Redemption requests sit in an investor-relations spreadsheet, cash balances sit in the accounting system, and nobody sees the two side by side until month-end.",
+after:"Each week you see a coverage gauge for each vehicle (green, amber or red) with the request queue, cash on hand and a severe-case view. Amber automatically alerts the CFO and legal team well before any gate discussion.",
+effort:"L",weeks:"8–12 weeks",stage:"capital",outcome:"cash",risk:"liquidity",primary:"cfo",
+riskText:"Being caught short of cash when investors ask for redemptions, and forced into a rushed gate or suspension decision.",
+roles:["CFO","Fund Controller / Fund Ops","Head of Capital Formation / IR","General Counsel","Investment Committee"],engines:[3],
+based:["FPM-02","CF-03","Investor redemption register","Private-REIT liquidity coverage (template)","Liquidity dashboard (output)"],
+note:"Any gate, proration or suspension decision still needs legal review; the dashboard only informs it."},
+
+{id:"approval-routing",title:"Approval Routing by Authority Limits",
+summary:"Every request that needs sign-off (an LOI, capex, a hedge, a refinance, a sale, a redemption, a related-party deal) is automatically sent to the right approvers based on its type and size.",
+why:"The manual sets out who may approve what, and that a conflicted person can never be the only approver. Doing this by email makes it easy to skip a step or ask the wrong person, and hard to prove later who approved what.",
+before:"A deal lead emails three people asking “OK to sign?”, someone replies “fine by me”, and later no one can show who approved it or whether they had the authority to.",
+after:"The deal lead submits once. The system reads the amount and type, routes it to the required approvers in order, prevents a conflicted person from being the sole approver, and files the decision record automatically.",
+effort:"M",weeks:"5–8 weeks",stage:"across",outcome:"gov",risk:"control",primary:"exec",
+riskText:"Commitments made without the right approval, or approved only by someone with a conflict.",
+roles:["CEO / Founder","COO","CFO","Investment Committee","Compliance Officer"],engines:[1,2,3,4],
+based:["GOV-02","GOV-03","GOV-04","Delegation-of-authority matrix (template)","IC decision record (output)"],
+note:"The approval limits in the manual are still placeholders; you would set the real numbers before this goes live."},
+
+{id:"conflicts",title:"Conflicts & Related-Party Tracker",
+summary:"One register of every affiliate, related-party agreement and related-party payment, with a clearance checklist that must be completed before anything is approved.",
+why:"When the sponsor's own companies provide services (for example an affiliated property manager), investors and regulators expect those arrangements to be disclosed, fairly priced and approved by someone independent. One source of truth makes that easy to show.",
+before:"Senior people know the affiliate relationships, but the details are spread across contracts, so the annual conflicts certification means a week of digging.",
+after:"Each new vendor, deal or payment is checked against the register. A match triggers the clearance checklist and an independent approver. The annual certification is largely pre-filled.",
+effort:"M",weeks:"4–7 weeks",stage:"across",outcome:"gov",risk:"control",primary:"compliance",
+riskText:"An undisclosed or unapproved related-party benefit coming to light later.",
+roles:["Compliance Officer","General Counsel","CFO","Investment Committee"],engines:[4],
+based:["GOV-04","FPM-07","AM-04","Related-party register"],
+note:"Following the manual, no affiliation is assumed from a similar name; links are recorded only from transaction-level evidence."},
+
+{id:"fee-map",title:"Fee & Money-Trail Map",
+summary:"A dollar-by-dollar map of every fee and economic item from an investor's first dollar through to exit, showing who receives each one.",
+why:"Acquisition, financing, management, construction, DST-formation and sale fees, plus promote (the sponsor's share of profits), add up. Being able to show them clearly, deal by deal, is how you answer investor due diligence quickly and confidently.",
+before:"An investor asks “What does the sponsor earn on this deal?” Answering takes days of pulling from the operating agreement, closing statement and management contracts.",
+after:"Open the deal and click “Fee map”: a clear list of every fee, its recipient, whether that recipient is an affiliate, and the source document. Export it straight to the investor's diligence team.",
+effort:"M",weeks:"5–8 weeks",stage:"across",outcome:"trust",risk:"control",primary:"cfo",
+riskText:"Fees that are hard to explain or that don't match what marketing materials say.",
+roles:["CFO","Compliance Officer","Head of Capital Formation / IR"],engines:[4],
+based:["FPM-07","GOV-04","CF-07","Fee and conflicts map (template)"]},
+
+{id:"ic-builder",title:"Investment Committee Package Builder with Claim-to-Proof Ledger",
+summary:"Assembles each Investment Committee (IC) package from a standard template and ties every important claim to its supporting evidence and an evidence label.",
+why:"The manual requires every IC package to separate confirmed facts from assumptions, sponsor claims and unverified items. A builder does that as the package is written, so the committee spends its time deciding rather than hunting for sources.",
+before:"The memo arrives the night before IC. A line says “below replacement cost”, but nobody can quickly tell whether that comes from an appraisal, a broker flyer or an internal estimate.",
+after:"Every claim in the memo carries a label (Confirmed, Sponsor Claim, Unverified and so on) and a link to its proof. Missing evidence is flagged before the package can be submitted, and the committee's decision is recorded on the spot.",
+effort:"L",weeks:"8–12 weeks",stage:"underwrite",outcome:"deals",risk:"evidence",primary:"exec",
+riskText:"Approving a deal on claims that turn out to be marketing rather than evidence.",
+roles:["Chief Investment Officer","Investment Committee","Head of Underwriting","Independent Red Team Reviewer","Compliance Officer"],engines:[1,2,3,4],
+based:["UW-08","GOV-03","UW-01","UW-09","IC memo (template)","Claim-to-proof ledger (template)","IC decision record (output)","Source and citation register"]},
+
+{id:"bridge-alerts",title:"Bridge Loan, Rate-Cap & Maturity Alerts",
+summary:"Tracks every short-term loan and interest-rate cap, warns well ahead of maturity, extension and cap-expiry dates, and shows a portfolio-wide maturity ladder.",
+why:"Bridge loans (short-term loans used to buy and improve a property) and rate caps (insurance against rising interest rates) have hard deadlines. Missing an extension notice or a cap renewal can turn a timing problem into a real loss.",
+before:"Maturity dates live in loan documents and a spreadsheet someone updates when they remember. An extension deadline gets noticed with weeks, not months, to spare.",
+after:"A countdown for every loan and cap, a calendar of decision dates, and a “maturity wall” chart by quarter. Alerts go to the debt team and CFO at set lead times, and loans flagged red go to IC every month.",
+effort:"M",weeks:"4–7 weeks",stage:"refinance",outcome:"debt",risk:"debt",primary:"debt",
+riskText:"A loan maturity, extension deadline or rate-cap expiry arriving before there is a plan.",
+roles:["Head of Capital Markets / Debt","CFO","Fund Controller / Fund Ops","Investment Committee"],engines:[2],
+based:["FIN-01","FIN-02","FIN-07","FPM-05","Debt maturity and covenant register","Bridge debt monitoring (template)"]},
+
+{id:"covenants",title:"Loan Covenant, Reserve & Guarantee Watchlist",
+summary:"Checks each loan's covenants (promises in the loan agreement, such as a minimum ratio of income to loan payments), lender reserves and sponsor guarantees every month, and flags shrinking headroom.",
+why:"Breaking a covenant can trigger a cash sweep (the lender keeping excess cash) or a default. Guarantees are obligations that don't show on a property's profit and loss but can land on the sponsor.",
+before:"Covenant certificates are prepared for the lender after the fact, so tight headroom is discovered when the certificate is due.",
+after:"Monthly property numbers feed the calculations automatically. You see each loan's headroom trend and get an amber alert when it falls below the buffer you choose.",
+effort:"M",weeks:"4–7 weeks",stage:"refinance",outcome:"debt",risk:"debt",primary:"debt",
+riskText:"A covenant breach, cash sweep or guarantee call that nobody saw coming.",
+roles:["Head of Capital Markets / Debt","Head of Asset Management","Fund Controller / Fund Ops","CFO"],engines:[2],
+based:["FIN-03","FIN-01","Debt maturity and covenant register"]},
+
+{id:"asset-review",title:"Monthly Asset Review Pack",
+summary:"Produces a standard monthly review for each property (actual against budget, last month and the original underwriting) with color-coded status and assigned actions.",
+why:"Problems at a property show up first as small monthly shifts in occupancy, late rent, concessions or expenses. A consistent pack makes those shifts visible and gives every issue an owner and a deadline.",
+before:"Each property manager sends a different-looking report. Asset managers re-type numbers into a deck, so review time goes on formatting rather than decisions.",
+after:"Property managers submit data in one format and the pack builds itself, with red/amber/green scores, 30/60/90-day actions and a hold/sell/refinance flag. New acquisitions are tracked against their first-100-days plan. The meeting focuses on the reds.",
+effort:"M",weeks:"5–8 weeks",stage:"run",outcome:"ops",risk:"ops",primary:"am",
+riskText:"A property drifting off its business plan for months before anyone acts.",
+roles:["Head of Asset Management","Property Manager","Chief Investment Officer","Fund Controller / Fund Ops"],engines:[1],
+based:["AM-03","AM-02","AM-01","Monthly asset review (template)","Asset business-plan scorecard (output)"]},
+
+{id:"closing",title:"Closing Checklist & Sources-and-Uses Reconciliation",
+summary:"A live closing checklist that also compares the final sources and uses (where the money comes from and where it goes) with what the Investment Committee approved.",
+why:"Closing is where small changes slip in: an extra fee, a bigger reserve, a different loan amount. Catching a difference before money moves is far easier than explaining it afterwards.",
+before:"The closing statement changes five times in the final week. The team compares versions by eye, and the IC-approved budget sits in a different file.",
+after:"Each new draft of the closing statement is checked line by line against the approved sources and uses. Differences over your limit go for approval, and the deal can't be marked “closed” until every checklist item is done or formally excepted.",
+effort:"M",weeks:"5–8 weeks",stage:"close",outcome:"deals",risk:"control",primary:"cfo",
+riskText:"Closing on terms or fees that differ from what was approved, without anyone signing off.",
+roles:["Fund Controller / Fund Ops","Head of Acquisitions","General Counsel","Head of Capital Markets / Debt"],engines:[1,2,4],
+based:["ACQ-02","ACQ-05","ACQ-04","ACQ-03"]},
+
+{id:"reporting-calendar",title:"Investor Reporting Calendar",
+summary:"A shared calendar of every monthly, quarterly and annual investor report and tax deliverable (such as K-1 tax forms), showing each input's due date and owner.",
+why:"Investor reports depend on inputs from accounting, property managers and the debt team. A calendar with countdowns keeps reports on time and catches late inputs early.",
+before:"Everyone knows the quarterly report deadline, but the inputs arrive whenever they arrive, and the team works the weekend before it's due.",
+after:"Each report has a timeline counting back from its due date. Owners get reminders for their inputs, and you see at a glance which reports are on track.",
+effort:"S",weeks:"2–4 weeks",stage:"report",outcome:"trust",risk:"comms",primary:"ir",
+riskText:"Late or rushed investor reports and tax forms.",
+roles:["Head of Capital Formation / IR","Fund Controller / Fund Ops","CFO","Tax Advisor"],engines:[3],
+based:["IRC-01","IRC-04"],
+note:"Reporting deadlines in the manual are placeholders; the calendar would use the dates you set."},
+
+{id:"stress-test",title:"Quarterly Stress-Test Report",
+summary:"Each quarter, runs the portfolio through base, moderate and severe downside scenarios and produces a board-ready risk report.",
+why:"Asking “What if rates rise, rents dip and a refinance slips?” before it happens lets you add reserves, adjust plans or tell investors early, instead of reacting.",
+before:"Stress tests are rebuilt from scratch in separate spreadsheets, so the scenarios change from quarter to quarter and are hard to compare.",
+after:"One run applies the same three scenarios to every property, loan and vehicle. Results flow into the quarterly IC package, with changes since last quarter highlighted.",
+effort:"L",weeks:"8–12 weeks",stage:"monitor",outcome:"debt",risk:"debt",primary:"exec",
+riskText:"Being caught unprepared by a downturn, a rate move or a failed refinance.",
+roles:["Chief Investment Officer","CFO","Investment Committee","Head of Asset Management","Head of Capital Markets / Debt"],engines:[1,2,3,4],
+based:["MA-02","FPM-06","Monthly portfolio risk report (output)","Quarterly board / IC package (output)","Risk register"]},
+
+{id:"attribution",title:"Post-Close & Post-Refinance Attribution Review",
+summary:"After every acquisition, refinance, sale or major overrun, compares what actually happened with the underwriting and shows how much of the result came from operations, from financing, or from fees.",
+why:"It's easy to credit a good result to the business plan when it really came from cheaper debt, or the other way round. Splitting results by economic engine shows what is truly working and sharpens the next underwriting.",
+before:"A year after closing, the deal is “doing well”, but nobody can say whether income growth or the refinance drove the result.",
+after:"A look-back report shows original underwriting, the IC-approved case and actual results side by side, broken down by the four engines, with lessons logged and fixes assigned.",
+effort:"M",weeks:"4–7 weeks",stage:"monitor",outcome:"deals",risk:"evidence",primary:"acq",
+riskText:"Repeating the same underwriting mistakes because nobody checked what really drove past results.",
+roles:["Head of Underwriting","Chief Investment Officer","Independent Red Team Reviewer","Investment Committee"],engines:[1,2,3,4],
+based:["MA-04","Post-mortem (template)","Transaction register","Asset business-plan scorecard (output)"]},
+
+{id:"deal-intake",title:"Deal Intake & Screening Log",
+summary:"Logs every new opportunity with an ID, records the seller's and broker's claims with evidence labels, runs a conflict check, and tracks the deal through screening to LOI approval.",
+why:"Deals arrive through many channels. Logging them the same way means nothing is lost, claims like “below replacement cost” get tested rather than repeated, and no letter of intent (LOI) goes out without approval.",
+before:"Opportunities come in by email and phone and live in personal lists. An LOI can go out before anyone has checked capital or debt capacity.",
+after:"Every deal has a record and a stage. The LOI request only unlocks once screening, the capital and debt check, and approver sign-off are complete.",
+effort:"M",weeks:"4–6 weeks",stage:"find",outcome:"deals",risk:"evidence",primary:"acq",
+riskText:"Committing to a deal (and a deposit) on untested claims or without approval.",
+roles:["Head of Acquisitions","Head of Underwriting","Compliance Officer","Chief Investment Officer"],engines:[1],
+based:["ORG-03","ORG-04","ORG-06","ORG-02"]},
+
+{id:"capital-pipeline",title:"Capital vs. Pipeline Planner",
+summary:"Matches the deal pipeline against forecast investor capital and debt capacity, so you can see whether you can actually fund what's in the pipeline.",
+why:"A pipeline bigger than the money available creates pressure and wasted deposits. The manual warns against “pipeline inflation”; this keeps ambitions tied to real capacity and to concentration limits (caps on exposure to one market or asset type).",
+before:"The pipeline report lists a dozen deals, the capital forecast is a separate file from investor relations, and the two are reconciled in the CEO's head.",
+after:"One chart shows expected capital in by month (clearly marked as estimates until committed) against deals by expected closing date, with warnings when a market or asset type nears its limit.",
+effort:"M",weeks:"5–8 weeks",stage:"find",outcome:"deals",risk:"liquidity",primary:"exec",
+riskText:"Chasing more deals than the fund can fund, or concentrating too much in one place.",
+roles:["CEO / Founder","Chief Investment Officer","Head of Capital Formation / IR","Head of Acquisitions"],engines:[3],
+based:["CF-01","ORG-05","FPM-01"]},
+
+{id:"diligence-tracker",title:"Diligence Data-Request & Open-Questions Tracker",
+summary:"Tracks every document requested from sellers, lenders and advisors, and every open question that could change a decision, with due dates and “blocks IC” flags.",
+why:"Unanswered questions have a way of quietly disappearing before IC. The manual says an open question must be closed, formally waived or escalated, never dropped. This makes that visible.",
+before:"Requests go out by email, replies land in different inboxes, and the status meeting is spent asking “Did we ever get the rent roll?”",
+after:"A shared list shows every request, its owner and how long it has been open. Items marked “blocks IC” must be cleared before the IC package can be submitted.",
+effort:"S",weeks:"3–5 weeks",stage:"underwrite",outcome:"deals",risk:"evidence",primary:"acq",
+riskText:"Going to IC, or to closing, with important questions still unanswered.",
+roles:["Head of Underwriting","Deal Lead","General Counsel","Chief Investment Officer"],engines:[1,2],
+based:["UW-02","UW-07","Data request tracker (template)","Open questions register"]},
+
+{id:"marketing-review",title:"Marketing & Investor-Message Review Queue",
+summary:"Sends every deck, webinar, website update and investor message that mentions performance, tax, liquidity or valuation through compliance review before it goes out.",
+why:"Statements to investors about returns or tax benefits carry legal risk if they can't be backed up. A review queue with evidence labels keeps marketing persuasive and defensible.",
+before:"A new pitch deck goes around with last year's return figure, and compliance sees it only after it has been sent to several advisors.",
+after:"Drafts go into a queue. Each performance or tax claim is checked against the claim-to-proof ledger, approved versions are stamped and archived, and unapproved versions can't be sent from the system.",
+effort:"M",weeks:"4–7 weeks",stage:"capital",outcome:"trust",risk:"comms",primary:"compliance",
+riskText:"Publishing a performance or tax claim that can't be supported.",
+roles:["Compliance Officer","Head of Capital Formation / IR","General Counsel"],engines:[3],
+based:["CF-06","CF-07","IRC-05","Claim-to-proof ledger (template)"],
+note:"Securities review by qualified counsel is still required; the tool organizes it, it doesn't replace it."},
+
+{id:"onboarding",title:"Investor Onboarding Checklist",
+summary:"Guides each new investor through identity checks, accreditation and paperwork before their money is accepted, with a clear status for the investor-relations team.",
+why:"Accepting money before KYC/AML checks (“know your customer” and anti-money-laundering) and accreditation checks are finished is a compliance risk. A checklist makes the process quick for investors and complete for you.",
+before:"Investor relations chases missing documents by email, and nobody can quickly confirm which investors are fully cleared.",
+after:"Each investor has a progress bar. Money can only be marked “accepted” once every check is complete, and documents are filed automatically.",
+effort:"M",weeks:"4–6 weeks",stage:"capital",outcome:"trust",risk:"comms",primary:"ir",
+riskText:"Accepting an investment before required identity, accreditation and suitability checks are done.",
+roles:["Head of Capital Formation / IR","Compliance Officer","Fund Controller / Fund Ops"],engines:[3],
+based:["CF-02","CF-04"],
+note:"The process gives no individual investment or tax advice, in line with the manual."},
+
+{id:"tax-pathways",title:"1031 / DST and 721 Pathway Case File",
+summary:"Keeps one case file for each investor using a 1031 exchange into a DST, or a possible Section 721 contribution into the REIT, with deadlines, documents and required legal and tax sign-offs.",
+why:"A 1031 exchange (swapping one property for another to defer tax) has strict timelines, and a 721 contribution (exchanging property interests for REIT operating-partnership units) needs counsel and tax review every time. A case file keeps every step documented, so the pathway is provable rather than just promised.",
+before:"Exchange deadlines and adviser sign-offs are tracked in email threads between investor relations, the qualified intermediary and counsel.",
+after:"Each case shows its deadline countdown, allocation status and which legal, tax and securities reviews are done. Nothing moves forward without them.",
+effort:"M",weeks:"5–8 weeks",stage:"capital",outcome:"trust",risk:"comms",primary:"ir",
+riskText:"A missed exchange deadline, or a tax pathway offered before it has been properly structured and reviewed.",
+roles:["Head of Capital Formation / IR","General Counsel","Tax Advisor","CFO"],engines:[3],
+based:["CF-04","CF-05","DISP-04","DISP-05"],
+note:"This is workflow support only, not tax, legal or securities advice. Each case needs qualified professional review."},
+
+{id:"capex",title:"Capex & Renovation Budget Tracker",
+summary:"Tracks every renovation and capital project (budget, bids, change orders, contractor payments and lien waivers) against the plan and the rent increase it was expected to deliver.",
+why:"Value-add plans depend on renovations coming in on budget and earning the rent increases that were underwritten. Change orders and contractor payment requests are where overruns hide.",
+before:"Contractor invoices are approved by email, and the asset manager learns of a large overrun when the next payment request arrives.",
+after:"Each project shows budget, committed and paid amounts, change orders waiting for approval, and lien-waiver status (proof that subcontractors were paid) before any payment is released. Renovated units show the rent increase they actually achieved.",
+effort:"M",weeks:"5–8 weeks",stage:"run",outcome:"ops",risk:"ops",primary:"am",
+riskText:"Renovation overruns, and rent increases that never arrive, going unnoticed.",
+roles:["Head of Asset Management","Property Manager","Fund Controller / Fund Ops"],engines:[1],
+based:["AM-06","AM-07","UW-04"]},
+
+{id:"pm-scorecard",title:"Property Manager Scorecard",
+summary:"Scores each property manager monthly on leasing, collections, expenses, service and reporting quality, with extra checks when the manager is an affiliate.",
+why:"The property manager drives day-to-day results. A fair, consistent scorecard keeps performance conversations objective and shows investors that affiliated managers are held to the same standard.",
+before:"Views on a manager's performance are anecdotal, and renewing or replacing a manager is hard to justify on paper.",
+after:"A ranked scorecard with trends, compared with each manager's own targets. Affiliated managers are flagged and benchmarked.",
+effort:"M",weeks:"4–7 weeks",stage:"run",outcome:"ops",risk:"ops",primary:"am",
+riskText:"Weak property management, or an affiliated manager on easier terms, dragging on results unnoticed.",
+roles:["Head of Asset Management","Property Manager","Compliance Officer"],engines:[1,4],
+based:["AM-04","AM-05","AM-08"]},
+
+{id:"cash-controls",title:"Property Cash & Payment Controls Monitor",
+summary:"Watches property bank accounts, payments and owner draws, requires two-person approval for payments, and flags anything paid to a related party or out of lender-restricted cash.",
+why:"Most cash leaks are small and routine: a duplicate invoice, an unapproved vendor, an early owner draw. Automatic checks catch them without slowing the team down.",
+before:"Payment approvals depend on each property manager's process, and the fund sees a monthly bank reconciliation after the money has gone.",
+after:"Regular bank feeds compare payments with approved vendors and limits. Exceptions (a new vendor, an affiliate payee, a restricted account) wait for a second approver.",
+effort:"M",weeks:"5–8 weeks",stage:"run",outcome:"cash",risk:"cash",primary:"cfo",
+riskText:"Cash leaking through duplicate, unapproved or related-party payments.",
+roles:["Fund Controller / Fund Ops","Head of Asset Management","Property Manager","CFO"],engines:[1,4],
+based:["AM-10","AM-08"]},
+
+{id:"nav",title:"NAV & Valuation Committee Workflow",
+summary:"Organizes each valuation cycle (asset values, appraisals, methods, out-of-date values and the NAV bridge, meaning what changed since last time) into a committee-ready record.",
+why:"NAV (net asset value, the fund's value per share) sets the price investors buy and redeem at. A clear, independent, documented process protects both incoming and departing investors.",
+before:"Values are pulled together from appraisals and internal models in a spreadsheet, and explaining why NAV moved takes a long email thread.",
+after:"The committee sees each asset's value, its source and age, a NAV bridge chart and a sign-off record. Values that haven't been refreshed on schedule are flagged automatically.",
+effort:"M",weeks:"5–8 weeks",stage:"report",outcome:"trust",risk:"evidence",primary:"cfo",
+riskText:"Investors buying or redeeming at a value that can't be clearly supported.",
+roles:["Valuation Committee","CFO","Fund Controller / Fund Ops","Head of Capital Formation / IR"],engines:[3],
+based:["FPM-03","IRC-02","NAV valuation committee (template)"]},
+
+{id:"hold-sell-refi",title:"Hold / Sell / Refinance Comparison",
+summary:"For each property, lays out holding, selling and refinancing side by side (net proceeds, timing, investor impact and fund cash needs) so the choice rests on evidence.",
+why:"The right move depends on net, not headline, numbers and on what the fund and its investors need. A standard comparison makes the trade-offs clear and the decision defensible.",
+before:"A broker's opinion of value starts the conversation, and the refinance and hold cases are built later on different assumptions.",
+after:"A one-page comparison for every asset each quarter, on the same assumptions. When a sale is chosen, bids are compared on net proceeds and approvals are routed automatically.",
+effort:"M",weeks:"5–8 weeks",stage:"exit",outcome:"ops",risk:"evidence",primary:"exec",
+riskText:"Selling, holding or refinancing on headline numbers instead of net results.",
+roles:["Chief Investment Officer","Investment Committee","Head of Asset Management","Head of Capital Markets / Debt","CFO"],engines:[1,2],
+based:["DISP-01","DISP-02","DISP-03"]},
+
+{id:"waterfall",title:"Sale & Distribution Waterfall Checker",
+summary:"At every sale, refinance cash-out or contribution closing, checks the loan payoffs, the fees and the investor distribution waterfall (the order in which money is paid out) before money moves.",
+why:"Waterfalls must follow the governing documents exactly. An error in who gets paid what, or in what order, is costly to unwind and damages trust.",
+before:"One person calculates the waterfall in a complex spreadsheet, and a second person re-checks it under time pressure.",
+after:"The system calculates the waterfall from the closing statement and the payout terms you have set up, shows each investor class's amount, and highlights any difference from the manual calculation.",
+effort:"L",weeks:"8–12 weeks",stage:"exit",outcome:"cash",risk:"cash",primary:"cfo",
+riskText:"Paying investors or the sponsor the wrong amounts, or in the wrong order, at exit.",
+roles:["Fund Controller / Fund Ops","CFO","General Counsel","Head of Capital Formation / IR"],engines:[2,4],
+based:["DISP-06","FPM-04","FIN-06"],
+note:"The payout terms set up in the tool would need to be confirmed against the governing documents by counsel."},
+
+{id:"exceptions",title:"Exception & Escalation Log",
+summary:"One place to request, approve and track any exception to a rule, and to report and close out incidents, each with an owner, a reason and an expiry date.",
+why:"Exceptions are sometimes necessary, but open-ended ones quietly become the new normal. A log with expiry dates and compensating controls keeps flexibility without losing discipline.",
+before:"Waivers are agreed in conversation, and months later nobody remembers why, or whether one still applies.",
+after:"A short form captures the request. Approved exceptions show an expiry countdown, and expired ones go back to the approver automatically. Incidents follow a standard path to closure.",
+effort:"S",weeks:"3–5 weeks",stage:"across",outcome:"gov",risk:"control",primary:"compliance",
+riskText:"Temporary waivers that never end, and incidents that are never fully closed.",
+roles:["Compliance Officer","COO","All process owners"],engines:[1,2,3,4],
+based:["GOV-06","Exception request log (template)","Exception register","Incident report (template)","Risk register"]},
+
+{id:"kpi-dashboard",title:"Portfolio KPI Dashboard with Red / Amber / Green Alerts",
+summary:"A standard dashboard of property, debt, fund and sponsor measures, color-coded, where every amber or red item gets an owner and a fix plan.",
+why:"Leadership attention is limited. A consistent dashboard with clear thresholds points it at the handful of items that matter this month. (KPI means key performance indicator.)",
+before:"Each team reports its own measures in its own format, and the leadership meeting spends time reconciling numbers.",
+after:"One dashboard, one set of definitions. Red items sit at the top with an owner and a due date, and trends show whether last month's fixes are working.",
+effort:"M",weeks:"6–9 weeks",stage:"monitor",outcome:"ops",risk:"ops",primary:"exec",
+riskText:"Important warning signs buried in inconsistent reports.",
+roles:["CEO / Founder","Chief Investment Officer","COO","Head of Asset Management","CFO"],engines:[1,2,3,4],
+based:["MA-01","FPM-06","FPM-01"]},
+
+{id:"material-events",title:"Material Event & Complaint Tracker",
+summary:"Logs potential material events (things investors may need to be told about) and investor complaints, sends them for assessment, and tracks disclosure or resolution to completion.",
+why:"Timely, accurate disclosure is a core duty to investors. Handling complaints through one process protects relationships and feeds lessons back into the controls.",
+before:"A casualty event at a property is discussed internally for days before anyone decides whether investors need to be told.",
+after:"The event is logged straight away, assessed against disclosure criteria, sent to counsel and compliance, and the decision and any investor notice are recorded with timestamps.",
+effort:"S",weeks:"3–5 weeks",stage:"report",outcome:"trust",risk:"comms",primary:"compliance",
+riskText:"Late, inconsistent or missing disclosure of events that matter to investors.",
+roles:["Compliance Officer","General Counsel","Head of Capital Formation / IR","CEO / Founder"],engines:[1,2,3,4],
+based:["IRC-03","IRC-06","GOV-06"]},
+
+{id:"controls-testing",title:"Controls Testing & Annual Certification Tracker",
+summary:"Schedules regular tests of key controls, records results and fixes, tracks staff training on the procedures, and pre-assembles the annual controls certification.",
+why:"Having rules is one thing; showing they actually work is what auditors, lenders and sophisticated investors ask for.",
+before:"The annual review means collecting evidence from every team in a rush, and training records are scattered.",
+after:"Tests run on a calendar, failures open a fix with an owner, training completion is tracked per person, and the year-end certification draft comes straight from the logged results.",
+effort:"M",weeks:"5–8 weeks",stage:"monitor",outcome:"gov",risk:"control",primary:"compliance",
+riskText:"Controls that exist on paper but quietly stop working.",
+roles:["Compliance Officer","CFO","COO"],engines:[1,2,3,4],
+based:["MA-03","MA-06","GOV-07","Annual controls certification (output)","SOP revision register"]},
+
+{id:"vault",title:"Audit-Ready Document Vault",
+summary:"Stores every decision record, approval and source document with consistent names and versions, so you can answer an auditor, lender or regulator quickly.",
+why:"When an auditor or examiner asks “Show me how you approved this,” the answer should take minutes. Consistent record-keeping also protects you if a decision is questioned later.",
+before:"Supporting files live in personal drives and inboxes, and every audit request sets off a scramble.",
+after:"Every approval made in the system files its evidence automatically with version history, so an audit request becomes a filtered search and an export.",
+effort:"M",weeks:"4–7 weeks",stage:"across",outcome:"gov",risk:"comms",primary:"cfo",
+riskText:"Being unable to produce the records behind a decision when asked.",
+roles:["CFO","General Counsel","Compliance Officer","COO"],engines:[1,2,3,4],
+based:["GOV-05","MA-05","Source and citation register"]}
+];
+(function(){
+"use strict";
+var GROUPS = {
+  outcome:{label:"By Business Outcome",note:"Grouped by the business result each feature serves.",key:"outcome",items:[
+    {k:"cash",t:"Protect investor cash",d:"Make sure money paid out, or moving through properties, is real, approved and correctly netted."},
+    {k:"deals",t:"Faster, better-evidenced deal decisions",d:"Find, test, approve and close deals on proof, not momentum."},
+    {k:"debt",t:"Stay ahead of debt, refinancing and downturns",d:"See loan deadlines, covenant pressure and downside scenarios early."},
+    {k:"ops",t:"Stronger property and portfolio performance",d:"Spot drift early and keep every property on its business plan."},
+    {k:"trust",t:"Investor trust and clean reporting",d:"Accurate, on-time, well-supported communication with investors."},
+    {k:"gov",t:"Governance and audit readiness",d:"Clear approvals, managed conflicts and records you can produce on request."}]},
+  stage:{label:"By Lifecycle Stage",note:"Grouped by where in the investment lifecycle each feature is mainly used.",key:"stage",items:[
+    {k:"capital",t:"1 · Capital in",d:"Investor onboarding, subscriptions, redemptions and tax-structured pathways."},
+    {k:"find",t:"2 · Find deals",d:"Sourcing, screening and matching deals to available capital."},
+    {k:"underwrite",t:"3 · Underwrite",d:"Testing the deal and preparing the Investment Committee decision."},
+    {k:"close",t:"4 · Close",d:"Buying the property on the terms that were approved."},
+    {k:"run",t:"5 · Run the asset",d:"Operating, renovating and controlling cash at each property."},
+    {k:"refinance",t:"6 · Manage debt & refinance",d:"Bridge loans, rate caps, covenants and refinance proceeds."},
+    {k:"report",t:"7 · Report",d:"Investor reports, valuations and disclosures."},
+    {k:"exit",t:"8 · Exit",d:"Hold, sell or refinance decisions and closing payouts."},
+    {k:"monitor",t:"9 · Monitor & improve",d:"Dashboards, stress tests, look-backs and controls testing."},
+    {k:"across",t:"Across the whole cycle",d:"Governance tools that apply at every stage."}]},
+  role:{label:"By Who Uses It",note:"Grouped by each feature's main user. Other users are listed inside each card.",key:"primary",items:[
+    {k:"exec",t:"Founder / CEO, CIO & Investment Committee",d:"Decision-makers who need the big picture and clear options."},
+    {k:"cfo",t:"CFO & Fund Controller",d:"Finance leaders responsible for cash, payouts, valuation and records."},
+    {k:"debt",t:"Capital Markets / Debt",d:"The team managing loans, rate caps and refinancing."},
+    {k:"am",t:"Asset Management & Property Managers",d:"The people running the properties day to day."},
+    {k:"acq",t:"Acquisitions & Underwriting",d:"The deal team sourcing, testing and learning from deals."},
+    {k:"ir",t:"Capital Formation & Investor Relations",d:"The team bringing in and serving investors."},
+    {k:"compliance",t:"Compliance & Legal",d:"The people who keep conflicts, disclosures and controls in order."}]},
+  risk:{label:"By Risk Removed",note:"Grouped by the main risk each feature reduces.",key:"risk",items:[
+    {k:"cash",t:"Money paid out that isn't really there",d:"Gross numbers mistaken for net, leaks and payout errors."},
+    {k:"liquidity",t:"Running short of cash for investors or deals",d:"Redemption pressure and pipelines bigger than available capital."},
+    {k:"debt",t:"Debt deadlines, covenant breaches and downturn surprises",d:"Timing and leverage risks that build quietly."},
+    {k:"evidence",t:"Decisions based on unproven claims",d:"Marketing or assumptions treated as fact."},
+    {k:"control",t:"Conflicts, hidden fees or unapproved commitments",d:"Approvals, related parties and exceptions that slip through."},
+    {k:"ops",t:"Property results slipping unnoticed",d:"Budget, renovation and manager drift."},
+    {k:"comms",t:"Missed deadlines, compliance gaps or unsupported messages",d:"Investor, regulator and audit obligations."}]}
+};
+var ENGINE = {1:"Property operations",2:"Financing & refinancing",3:"Tax-structured & capital formation",4:"Sponsor economics"};
+var STAGE = {}; GROUPS.stage.items.forEach(function(g){STAGE[g.k]=g.t.replace(/^\d · /,"");});
+var OUTCOME = {}; GROUPS.outcome.items.forEach(function(g){OUTCOME[g.k]=g.t;});
+var RISK = {}; GROUPS.risk.items.forEach(function(g){RISK[g.k]=g.t;});
+var CORE = ["GOV-01","GOV-02","GOV-03","GOV-04","UW-01","UW-08","FIN-06","FPM-02","FPM-07","MA-04"];
+var BUCKETS = [{k:"now",t:"Now"},{k:"next",t:"Next"},{k:"later",t:"Later"}];
+var EFFORT = {S:"Small",M:"Medium",L:"Large"};
+var KEY = "aperture-feature-picker-v1";
+var byId = {}; FEATURES.forEach(function(f){byId[f.id]=f;});
+
+var state = {picks:{},stars:{},notes:"",view:"outcome",filter:"all"};
+var expanded = {};
+var storageOK = true;
+function load(){
+  try{
+    var raw = window.localStorage.getItem(KEY);
+    if(raw){var s = JSON.parse(raw);
+      if(s && typeof s==="object"){
+        state.picks = (s.picks && typeof s.picks==="object")? s.picks:{};
+        state.stars = (s.stars && typeof s.stars==="object")? s.stars:{};
+        state.notes = typeof s.notes==="string"? s.notes:"";
+        state.view = GROUPS[s.view]? s.view:"outcome";
+        state.filter = ["all","undecided","picked","starred"].indexOf(s.filter)>=0? s.filter:"all";
+      }}
+    Object.keys(state.picks).forEach(function(id){ if(!byId[id] || ["now","next","later"].indexOf(state.picks[id])<0) delete state.picks[id]; });
+    Object.keys(state.stars).forEach(function(id){ if(!byId[id] || !state.stars[id]) delete state.stars[id]; });
+  }catch(e){storageOK=false;}
+}
+function save(){
+  try{window.localStorage.setItem(KEY, JSON.stringify(state));}catch(e){storageOK=false;}
+}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function isCore(f){return f.based.some(function(b){return CORE.indexOf(b)>=0;});}
+function sopIds(f){return f.based.filter(function(b){return /^[A-Z]+-\d+$/.test(b);});}
+function others(f){return f.based.filter(function(b){return !/^[A-Z]+-\d+$/.test(b);});}
+
+function passFilter(f){
+  var p = state.picks[f.id], s = !!state.stars[f.id];
+  switch(state.filter){
+    case "undecided": return !p;
+    case "picked": return !!p || s;
+    case "starred": return s;
+    default: return true;
+  }
+}
+
+function cardHTML(f){
+  var p = state.picks[f.id]||"", s = !!state.stars[f.id], open = !!expanded[f.id];
+  var did = "d-"+f.id, hid = "h-"+f.id;
+  var h = '<article class="card'+(p?' p-'+p:'')+'" data-id="'+f.id+'" aria-labelledby="'+hid+'">';
+  h += '<div class="card-top"><h3 id="'+hid+'">'+esc(f.title)+'</h3>';
+  h += '<button type="button" class="star" data-act="star" aria-pressed="'+s+'" aria-label="'+(s?'Remove star from ':'Star as top priority: ')+esc(f.title)+'" title="'+(s?'Starred as a top priority':'Star as a top priority')+'">'+(s?'★':'☆')+'</button></div>';
+  h += '<p class="sum">'+esc(f.summary)+'</p>';
+  h += '<div class="chips"><span class="chip eff" title="Rough estimate, not a quote">Effort '+f.effort+' · est. '+esc(f.weeks)+'</span>';
+  if(state.view!=="stage") h += '<span class="chip">'+esc(STAGE[f.stage])+'</span>';
+  if(isCore(f)) h += '<span class="chip core" title="Draws on one of the ten SOPs your implementation guide recommends adopting first">Core control</span>';
+  h += '</div>';
+  h += '<div class="actions"><div class="seg" role="group" aria-label="When to build '+esc(f.title)+'">';
+  BUCKETS.forEach(function(b){ h += '<button type="button" data-act="pick" data-b="'+b.k+'" aria-pressed="'+(p===b.k)+'">'+b.t+'</button>'; });
+  h += '</div><button type="button" class="more" data-act="toggle" aria-expanded="'+open+'" aria-controls="'+did+'">'+(open?'Hide details ▴':'Details ▾')+'</button></div>';
+  h += '<div class="details" id="'+did+'"'+(open?'':' hidden')+'>';
+  h += '<div><h4>Why it matters</h4><p>'+esc(f.why)+'</p></div>';
+  h += '<div><h4>A day in your life: before → after</h4><div class="ba"><div class="b"><b>Before.</b> '+esc(f.before)+'</div><div class="a"><b>After.</b> '+esc(f.after)+'</div></div></div>';
+  h += '<div class="est"><b>ESTIMATE, not a quote:</b> effort '+f.effort+' ('+EFFORT[f.effort]+'), roughly '+esc(f.weeks)+' to a first working version. To be confirmed after discovery.</div>';
+  h += '<dl class="kv"><dt>Lifecycle stage</dt><dd>'+esc(STAGE[f.stage])+'</dd>';
+  h += '<dt>Who uses it</dt><dd>'+f.roles.map(esc).join(', ')+'</dd>';
+  h += '<dt>Outcome served</dt><dd>'+esc(OUTCOME[f.outcome])+'</dd>';
+  h += '<dt>Risk removed</dt><dd>'+esc(f.riskText)+'</dd>';
+  h += '<dt>Economic engine'+(f.engines.length>1?'s':'')+'</dt><dd>'+(f.engines.length===4?'All four':f.engines.map(function(e){return ENGINE[e];}).join(', '))+'</dd></dl>';
+  if(f.note) h += '<p class="note">'+esc(f.note)+'</p>';
+  h += '<p class="based"><b>Based on:</b> '+sopIds(f).map(function(x){return '<code>'+esc(x)+'</code>';}).join(' ')+(others(f).length?' · '+others(f).map(esc).join(' · '):'')+'</p>';
+  h += '</div></article>';
+  return h;
+}
+
+var panel = document.getElementById("viewPanel");
+function render(){
+  var g = GROUPS[state.view];
+  var html = '<p class="view-note">'+esc(g.note)+' Your choices stay the same whichever view you use.</p>';
+  var shown = 0;
+  g.items.forEach(function(gr){
+    var list = FEATURES.filter(function(f){return f[g.key]===gr.k;});
+    var vis = list.filter(passFilter);
+    shown += vis.length;
+    if(!vis.length && state.filter!=="all") return;
+    html += '<section class="group" aria-labelledby="g-'+gr.k+'"><div class="group-head"><h2 id="g-'+gr.k+'">'+esc(gr.t)+'</h2><span class="count">'+list.length+' feature'+(list.length===1?'':'s')+(vis.length!==list.length?' · '+vis.length+' shown':'')+'</span></div><p class="desc">'+esc(gr.d)+'</p>';
+    html += vis.length? '<div class="cards">'+vis.map(cardHTML).join('')+'</div>' : '<p class="empty">No features in this group.</p>';
+    html += '</section>';
+  });
+  if(!shown) html += '<p class="empty" style="padding:30px 0">Nothing matches this filter yet. Choose “All features” above to see everything.</p>';
+  panel.innerHTML = html;
+  document.querySelectorAll(".tab").forEach(function(t){
+    var on = t.getAttribute("data-view")===state.view;
+    t.setAttribute("aria-selected", on); t.tabIndex = on?0:-1;
+  });
+  panel.setAttribute("aria-labelledby","tab-"+state.view);
+  document.getElementById("filter").value = state.filter;
+  updateCounts();
+}
+function counts(){
+  var c={now:0,next:0,later:0,star:0};
+  FEATURES.forEach(function(f){var p=state.picks[f.id]; if(p) c[p]++; if(state.stars[f.id]) c.star++;});
+  return c;
+}
+function updateCounts(){
+  var c = counts();
+  document.getElementById("cNow").textContent=c.now;
+  document.getElementById("cNext").textContent=c.next;
+  document.getElementById("cLater").textContent=c.later;
+  document.getElementById("cStar").textContent=c.star;
+  document.getElementById("cTotal").textContent=FEATURES.length;
+}
+function refreshCard(id, focusSel){
+  var cards = panel.querySelectorAll('.card[data-id="'+id+'"]');
+  cards.forEach(function(card){
+    var tmp = document.createElement("div"); tmp.innerHTML = cardHTML(byId[id]);
+    var fresh = tmp.firstChild; card.parentNode.replaceChild(fresh, card);
+    if(focusSel){var el = fresh.querySelector(focusSel); if(el) el.focus();}
+  });
+  updateCounts();
+}
+
+panel.addEventListener("click", function(e){
+  var btn = e.target.closest("button[data-act]"); if(!btn) return;
+  var card = btn.closest(".card"); var id = card.getAttribute("data-id");
+  var act = btn.getAttribute("data-act");
+  if(act==="pick"){
+    var b = btn.getAttribute("data-b");
+    if(state.picks[id]===b) delete state.picks[id]; else state.picks[id]=b;
+    save(); refreshCard(id, 'button[data-b="'+b+'"]');
+  }else if(act==="star"){
+    if(state.stars[id]) delete state.stars[id]; else state.stars[id]=true;
+    save(); refreshCard(id, 'button[data-act="star"]');
+  }else if(act==="toggle"){
+    expanded[id]=!expanded[id]; refreshCard(id, 'button[data-act="toggle"]');
+  }
+});
+
+var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+function selectView(v, focus){
+  state.view=v; save(); render();
+  if(focus){var t=document.getElementById("tab-"+v); if(t) t.focus();}
+}
+tabs.forEach(function(t,i){
+  t.addEventListener("click",function(){selectView(t.getAttribute("data-view"));});
+  t.addEventListener("keydown",function(e){
+    var j=null;
+    if(e.key==="ArrowRight") j=(i+1)%tabs.length;
+    else if(e.key==="ArrowLeft") j=(i-1+tabs.length)%tabs.length;
+    else if(e.key==="Home") j=0; else if(e.key==="End") j=tabs.length-1;
+    if(j!==null){e.preventDefault(); selectView(tabs[j].getAttribute("data-view"), true);}
+  });
+});
+document.getElementById("filter").addEventListener("change",function(e){state.filter=e.target.value; save(); render();});
+document.getElementById("expandAll").addEventListener("click",function(){FEATURES.forEach(function(f){expanded[f.id]=true;}); render();});
+document.getElementById("collapseAll").addEventListener("click",function(){expanded={}; render();});
+
+/* ---------- Review & export ---------- */
+function ordered(bucket){
+  var list = FEATURES.filter(function(f){return state.picks[f.id]===bucket;});
+  return list.filter(function(f){return state.stars[f.id];}).concat(list.filter(function(f){return !state.stars[f.id];}));
+}
+function starredUnscheduled(){return FEATURES.filter(function(f){return state.stars[f.id] && !state.picks[f.id];});}
+function tally(){
+  var t = {}; BUCKETS.forEach(function(b){t[b.k]={S:0,M:0,L:0};}); t.total={S:0,M:0,L:0};
+  FEATURES.forEach(function(f){var p=state.picks[f.id]; if(p){t[p][f.effort]++; t.total[f.effort]++;}});
+  return t;
+}
+var CAVEAT = "Effort sizes (S = Small, M = Medium, L = Large) and week ranges are rough planning estimates, not quotes or commitments. Features listed in the same bucket may share groundwork, so their timelines should not simply be added together. Firm scope, timing and cost would follow a short discovery phase. The underlying control documents are internal templates and are not legal, tax or securities advice, and dollar thresholds in the SOPs are placeholders.";
+function today(){
+  var d = new Date();
+  try{return d.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});}catch(e){return d.toDateString();}
+}
+function buildText(){
+  var L = [];
+  L.push("YOUR FUND OPERATIONS ROADMAP — MY PICKS");
+  L.push("Prepared by Aperture · Generated " + today());
+  L.push("★ = starred as a top priority");
+  L.push("");
+  var any=false;
+  BUCKETS.forEach(function(b){
+    var list = ordered(b.k);
+    L.push(b.t.toUpperCase()+" ("+list.length+")");
+    if(!list.length) L.push("  (none selected)");
+    list.forEach(function(f,i){
+      any=true;
+      L.push("  "+(i+1)+". "+(state.stars[f.id]?"★ ":"")+f.title);
+      L.push("     Effort "+f.effort+" (estimate: "+f.weeks+") · Stage: "+STAGE[f.stage]+" · Based on: "+sopIds(f).join(", "));
+    });
+    L.push("");
+  });
+  var su = starredUnscheduled();
+  if(su.length){
+    L.push("STARRED, NOT YET SCHEDULED ("+su.length+")");
+    su.forEach(function(f,i){L.push("  "+(i+1)+". ★ "+f.title+" — Effort "+f.effort+" (estimate: "+f.weeks+")");});
+    L.push("");
+  }
+  var t = tally();
+  L.push("ROUGH EFFORT TALLY (count of features by size — estimates only)");
+  BUCKETS.forEach(function(b){L.push("  "+(b.t+":").padEnd(7)+"S "+t[b.k].S+" · M "+t[b.k].M+" · L "+t[b.k].L);});
+  L.push("  "+"Total:".padEnd(7)+"S "+t.total.S+" · M "+t.total.M+" · L "+t.total.L);
+  L.push("");
+  L.push("NOTES");
+  L.push(state.notes.trim()? state.notes.trim() : "  (no notes)");
+  L.push("");
+  L.push("IMPORTANT");
+  L.push(CAVEAT);
+  if(!any && !su.length) L.splice(3,0,"(No features have been picked yet.)","");
+  return L.join("\n");
+}
+function listHTML(list, cls){
+  return '<ol>'+list.map(function(f){
+    return '<li>'+(state.stars[f.id]?'<span aria-label="starred" style="color:var(--star)">★</span> ':'')+'<b>'+esc(f.title)+'</b> <span class="'+cls+'">· Effort '+f.effort+' (est. '+esc(f.weeks)+') · '+esc(STAGE[f.stage])+' · '+sopIds(f).map(esc).join(', ')+'</span></li>';
+  }).join('')+'</ol>';
+}
+function tallyHTML(){
+  var t = tally();
+  var h = '<table class="tally"><thead><tr><th scope="col">Bucket</th><th scope="col">S (Small)</th><th scope="col">M (Medium)</th><th scope="col">L (Large)</th><th scope="col">Features</th></tr></thead><tbody>';
+  BUCKETS.forEach(function(b){var r=t[b.k]; h+='<tr><th scope="row">'+b.t+'</th><td>'+r.S+'</td><td>'+r.M+'</td><td>'+r.L+'</td><td>'+(r.S+r.M+r.L)+'</td></tr>';});
+  var r=t.total; h+='<tr><th scope="row">Total</th><td>'+r.S+'</td><td>'+r.M+'</td><td>'+r.L+'</td><td>'+(r.S+r.M+r.L)+'</td></tr></tbody></table>';
+  return h;
+}
+var colors = {now:"var(--now)",next:"var(--next)",later:"var(--later)"};
+function renderReview(){
+  var h = '';
+  var c = counts();
+  if(!c.now && !c.next && !c.later && !c.star){
+    h += '<p class="empty" style="margin-top:16px">You haven\'t picked anything yet. Close this panel and press Now, Next or Later on the features that matter to you.</p>';
+  }
+  BUCKETS.forEach(function(b){
+    var list = ordered(b.k);
+    h += '<div class="rv-group"><h3><span class="dot" style="background:'+colors[b.k]+'"></span>'+b.t+' <span style="color:var(--muted);font-weight:400">('+list.length+')</span></h3>';
+    h += list.length? listHTML(list,"meta") : '<p class="empty">None selected.</p>';
+    h += '</div>';
+  });
+  var su = starredUnscheduled();
+  if(su.length){ h += '<div class="rv-group"><h3><span style="color:var(--star)">★</span> Starred, not yet scheduled ('+su.length+')</h3>'+listHTML(su,"meta")+'</div>'; }
+  h += '<div class="rv-group"><h3>Rough effort tally</h3>'+tallyHTML()+'<p class="caveat"><b>Estimates only.</b> '+esc(CAVEAT)+'</p></div>';
+  if(!storageOK) h += '<p class="note">Your browser is blocking local storage, so choices will not be remembered after you close this page. Use Download or Copy to keep them.</p>';
+  document.getElementById("rvBody").innerHTML = h;
+}
+function buildPrint(){
+  var h = '<h1>Your Fund Operations Roadmap — My Picks</h1><p class="sub">Prepared by Aperture · Generated '+esc(today())+' · ★ = top priority</p>';
+  BUCKETS.forEach(function(b){
+    var list = ordered(b.k);
+    h += '<h2>'+b.t+' ('+list.length+')</h2>'+(list.length? listHTML(list,"m") : '<p class="m">None selected.</p>');
+  });
+  var su = starredUnscheduled();
+  if(su.length) h += '<h2>Starred, not yet scheduled ('+su.length+')</h2>'+listHTML(su,"m");
+  h += '<h2>Rough effort tally (estimates only)</h2>'+tallyHTML();
+  h += '<h2>Notes</h2><div class="notes">'+(state.notes.trim()? esc(state.notes.trim()) : '<span class="m">No notes.</span>')+'</div>';
+  h += '<p class="fine">'+esc(CAVEAT)+'</p>';
+  document.getElementById("printArea").innerHTML = h;
+}
+window.addEventListener("beforeprint", buildPrint);
+
+var overlay = document.getElementById("overlay"), lastFocus=null;
+var notes = document.getElementById("notes");
+function openReview(){
+  lastFocus = document.activeElement;
+  renderReview(); notes.value = state.notes; setStatus("");
+  overlay.hidden = false; document.body.style.overflow="hidden";
+  document.getElementById("closeReview").focus();
+}
+function closeReview(){
+  overlay.hidden = true; document.body.style.overflow="";
+  render();
+  if(lastFocus && document.body.contains(lastFocus)) lastFocus.focus(); else document.getElementById("openReview").focus();
+}
+document.getElementById("openReview").addEventListener("click",openReview);
+document.getElementById("closeReview").addEventListener("click",closeReview);
+overlay.addEventListener("click",function(e){ if(e.target===overlay) closeReview(); });
+document.addEventListener("keydown",function(e){
+  if(overlay.hidden) return;
+  if(e.key==="Escape"){e.preventDefault(); closeReview(); return;}
+  if(e.key==="Tab"){
+    var f = overlay.querySelectorAll('button,textarea,[href],select,input,[tabindex]:not([tabindex="-1"])');
+    f = Array.prototype.filter.call(f,function(el){return !el.disabled && el.offsetParent!==null;});
+    if(!f.length) return;
+    var first=f[0], last=f[f.length-1];
+    if(e.shiftKey && document.activeElement===first){e.preventDefault(); last.focus();}
+    else if(!e.shiftKey && document.activeElement===last){e.preventDefault(); first.focus();}
+  }
+});
+var nt=null;
+notes.addEventListener("input",function(){ state.notes = notes.value; clearTimeout(nt); nt=setTimeout(save,250); });
+function setStatus(m){document.getElementById("status").textContent=m;}
+function fallbackCopy(text){
+  var ta=document.createElement("textarea"); ta.value=text; ta.setAttribute("readonly",""); ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select(); var ok=false;
+  try{ok=document.execCommand("copy");}catch(e){ok=false;}
+  document.body.removeChild(ta); document.getElementById("copyBtn").focus();
+  return ok;
+}
+document.getElementById("copyBtn").addEventListener("click",function(){
+  save(); var text = buildText();
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text).then(function(){setStatus("Summary copied to your clipboard.");},function(){setStatus(fallbackCopy(text)?"Summary copied to your clipboard.":"Couldn't copy automatically. Please use Download instead.");});
+  }else{ setStatus(fallbackCopy(text)?"Summary copied to your clipboard.":"Couldn't copy automatically. Please use Download instead."); }
+});
+document.getElementById("dlBtn").addEventListener("click",function(){
+  save(); var text = buildText();
+  var blob = new Blob([text],{type:"text/plain;charset=utf-8"});
+  var a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = "fund-operations-roadmap-picks.txt"; document.body.appendChild(a); a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href); a.remove();},500);
+  setStatus("Summary downloaded as fund-operations-roadmap-picks.txt.");
+});
+document.getElementById("printBtn").addEventListener("click",function(){ save(); buildPrint(); window.print(); });
+document.getElementById("resetBtn").addEventListener("click",function(){
+  if(window.confirm("Reset all choices? This clears every Now / Next / Later pick, all stars and your notes. This can't be undone.")){
+    state.picks={}; state.stars={}; state.notes=""; notes.value=""; save(); renderReview(); updateCounts(); setStatus("All choices have been reset.");
+  }
+});
+
+/* expose for testing */
+window.__picker = {state:state, buildText:buildText, FEATURES:FEATURES};
+load(); render();
+})();
+</script>
+</body></html>
